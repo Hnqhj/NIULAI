@@ -1,5 +1,10 @@
 # Director Skill Console
 
+详细说明：
+
+- [Director Skill Console 技能服务](docs/01-director-skill-console.md)
+- [牛来.exe Codex 桌面增强器](docs/02-codex-desktop-enhancer.md)
+
 Phase-one local core for visual Skill management and truthful task routing status.
 
 ## Included
