@@ -1,0 +1,176 @@
+{
+  "contractVersion": 6,
+  "stateSchema": "config/orchestration-state.schema.json",
+  "project": "Liu live-action short drama",
+  "precedence": [
+    "explicit_user_instruction",
+    "inspected_references",
+    "accepted_continuity",
+    "story_and_dialogue",
+    "physical_feasibility",
+    "camera_and_aesthetic",
+    "platform_syntax",
+    "decoration"
+  ],
+  "rules": {
+    "deliveryContracts": {
+      "liu_camera_group": { "min": 14, "max": 28, "hardMax": 30 },
+      "generic_seedance_clip": { "min": 4, "max": 15 },
+      "storyboard_only": { "min": 0, "max": null }
+    },
+    "cameraGroupSeconds": { "min": 14, "max": 28, "hardMax": 30 },
+    "typicalShotSeconds": { "min": 1, "max": 4 },
+    "dialogueCharactersPerSecond": { "min": 2.8, "target": 3, "max": 3.2 },
+    "audio": "default: character dialogue/voice-over plus source-coupled dry foley; music/ambience/mood effects only with explicit user or authoritative-script requirement",
+    "assetHandles": "stable internal asset_id + exact platform @角色名/@文件名 handle",
+    "delivery": "all script inputs -> camera groups with human shot table outside and one detailed six-part prompt per group; complete scripts use global grouping, local fragments use local grouping; structured plans retain contiguous micro-beats; prompts show T micro-beats only for high profile",
+    "adaptiveProcessingDepth": {
+      "default": "standard",
+      "selectionOwner": "script-camera-group-router",
+      "fastRequiresAll": ["local_or_single_scene", "max_two_active_characters", "simple_non_contact_action", "one_location", "assets_sufficient", "known_platform_mode", "no_research_or_retry_need"],
+      "fullWhenAny": ["fight_chase_weapon_or_stunt", "vfx_transformation_destruction_or_simulation", "complex_multi_character_or_cross_scene_continuity", "reference_conflict_or_missing_p0", "platform_research_or_output_retry", "generated_output_present", "performance_or_emotion_direction", "relationship_or_dialogue_direction", "ip_likeness_or_safety_review", "commercial_exhaustive_delivery"],
+      "visibleDeliveryInvariant": "camera_groups + shot_table + detailed_six_part + explicit_shot_blocks; structured_micro_beats_always; visible_T_micro_beats_when_profile_high"
+    },
+    "executionPlans": {
+      "fast": {
+        "required": ["script-camera-group-router", "narrative-camera-groups", "seedance-camera-group-compiler-fast", "camera-group-preflight-fast"],
+        "forbidden": ["ai-video-prompt-director", "ai-video-production-governance", "camera-group-director-standard", "director-workflow-70", "ai-short-drama-storyboard", "professional-storyboard-director", "cinematic-audiovisual-language", "character-continuity-bible", "ai-material-realism", "cinematic-music-sound-design", "seedance-20", "jimeng-sd2-prompting", "full-prompt-delivery", "ai-video-prompt-preflight", "creative-research-first"],
+      "preflightProfile": "fast",
+        "promptCompileCount": 1,
+        "reviewBudget": {
+          "planningOwner": "narrative-camera-groups",
+          "semanticOwner": "none",
+          "mechanicalOwner": "camera-group-preflight-fast",
+          "globalReasoning": "disabled",
+          "specialistReview": "none"
+        }
+      },
+      "standard": {
+        "required": ["script-camera-group-router", "camera-group-director-standard", "narrative-camera-groups", "<selected-platform-compiler>", "camera-group-preflight-standard"],
+        "requiredPreflight": "camera-group-preflight-standard",
+        "forbidden": ["ai-video-prompt-director", "ai-video-production-governance", "director-workflow-70", "ai-short-drama-storyboard", "professional-storyboard-director", "cinematic-audiovisual-language", "character-continuity-bible", "ai-material-realism", "cinematic-music-sound-design", "camera-group-preflight-fast", "full-prompt-delivery", "ai-video-prompt-preflight", "creative-research-first", "<unselected-platform-compilers>"],
+      "preflightProfile": "standard",
+        "promptCompileCount": 1,
+        "reviewBudget": {
+          "planningOwner": "camera-group-director-standard",
+          "semanticOwner": "camera-group-preflight-standard",
+          "mechanicalOwner": "camera-group-preflight-standard",
+          "globalReasoning": "disabled",
+          "specialistReview": "none"
+        }
+      },
+      "full": {
+        "requiredBase": ["script-camera-group-router", "ai-video-prompt-director", "ai-video-production-governance", "cinematic-audiovisual-language", "professional-storyboard-director", "ai-material-realism", "cinematic-music-sound-design", "narrative-camera-groups", "<selected-platform-compiler>", "ai-video-prompt-preflight"],
+        "conditionalBySignal": {
+          "continuity": ["character-continuity-bible"],
+          "action": ["action-choreography-reference", "action-rhythm-editing", "seedance-fight-director when Seedance"],
+          "vfx": ["cinematic-vfx-director", "vfx-effect-construction-engine", "seedance-vfx when Seedance"],
+          "research": ["creative-research-first"],
+          "output_review": ["ai-video-output-review"],
+          "output_retry": ["ai-video-iteration-doctor"],
+          "performance": ["live-action-performance-direction"],
+          "emotion": ["emotional-performance-direction"],
+          "relationship_or_dialogue": ["relationship-dialogue-direction"],
+          "ip_likeness_or_safety": ["seedance-copyright", "seedance-filter when Seedance"]
+        },
+        "forbidden": ["camera-group-director-standard", "camera-group-preflight-fast", "camera-group-preflight-standard", "director-workflow-70", "ai-short-drama-storyboard", "full-prompt-delivery", "<unselected-platform-compilers>"],
+      "preflightProfile": "full",
+        "promptCompileCount": 1,
+        "reviewBudget": {
+          "planningOwner": "ai-video-prompt-director",
+          "semanticOwner": "ai-video-prompt-preflight",
+          "mechanicalOwner": "ai-video-prompt-preflight",
+          "globalReasoning": "delta-only",
+          "specialistReview": "domain-only"
+        }
+      }
+    },
+    "research": {
+      "owner": "creative-research-first",
+      "maxRuns": 1,
+      "receipt": "ResearchReceipt",
+      "downstreamPolicy": "reuse receipt; do not browse again"
+    },
+    "contextPolicy": {
+      "sourceOfTruth": "orchestration_state",
+      "handoffMode": "state_patch_only",
+      "referenceReadPolicy": "read_once_reuse_receipt",
+      "transcriptReplay": "forbidden",
+      "reviewMode": "owner_only",
+      "compilerInput": "approved_state_only"
+    },
+    "inputScopeRoutes": {
+      "complete_script_or_multi_shot_sequence": {
+        "planner": "narrative-camera-groups",
+        "promptFormat": "six_part",
+        "defaultDelivery": "all_groups_or_user_selected_groups"
+      },
+      "local_fragment_or_single_continuation_beat": {
+        "planner": "narrative-camera-groups",
+        "promptFormat": "six_part",
+        "defaultDelivery": "one_local_camera_group"
+      },
+      "explicit_user_format": "may change language or presentation detail but script-derived delivery remains six_part and is recorded in TaskEnvelope.output_format"
+    },
+    "cameraGroupGenerationMapping": {
+      "default": "1:1",
+      "splitAllowedWhen": ["model_limit", "complexity", "continuity"],
+      "splitRequires": "reason_and_preserved_opening_ending_handoff"
+    },
+    "stateChain": [
+      "TaskEnvelope",
+      "ExecutionPlan",
+      "RouteReceipt",
+      "ResearchReceipt",
+      "StoryContract",
+      "ContinuityContract",
+      "InformationLedger",
+      "SpaceContract",
+      "ShotLedger",
+      "CameraGroupPlan",
+      "GenerationSegmentPlan",
+      "PlatformPromptSet",
+      "QCReport",
+      "OutputReview",
+      "RetryPlan"
+    ],
+    "specialistReturn": "TASK_CARD with objective, inputs, decisions, state_patch_request, uncertainty, blocking"
+  },
+  "surfaces": [
+    { "id": "camera_group_route", "label": "镜头组深度路由", "owner": "script-camera-group-router" },
+    { "id": "camera_group_standard_plan", "label": "标准镜头组一次式规划", "owner": "camera-group-director-standard", "conditional": true },
+    { "id": "governance", "label": "项目治理与状态", "owner": "ai-video-production-governance" },
+    { "id": "intent", "label": "意图与总控", "owner": "ai-video-prompt-director" },
+    { "id": "group_delivery", "label": "镜头组与最终交付", "owner": "narrative-camera-groups" },
+    { "id": "shot_design", "label": "分镜设计", "owner": "professional-storyboard-director" },
+    { "id": "camera", "label": "摄影机语法", "owner": "cinematic-audiovisual-language" },
+    { "id": "acting", "label": "真人表演基础", "owner": "live-action-performance-direction" },
+    { "id": "emotion", "label": "情绪递进", "owner": "emotional-performance-direction", "conditional": true },
+    { "id": "relationship", "label": "双人关系调度", "owner": "relationship-dialogue-direction", "conditional": true },
+    { "id": "action", "label": "动作物理", "owner": "action-choreography-reference", "conditional": true },
+    { "id": "fight_compile", "label": "Seedance打斗融合", "owner": "seedance-fight-director", "conditional": true },
+    { "id": "vfx", "label": "特效设计", "owner": "cinematic-vfx-director", "conditional": true },
+    { "id": "material", "label": "材质与光照", "owner": "ai-material-realism" },
+    { "id": "sound", "label": "台词与纯拟声", "owner": "cinematic-music-sound-design" },
+    { "id": "seedance", "label": "Seedance平台编译", "owner": "seedance-20", "conditional": true },
+    { "id": "jimeng", "label": "即梦平台编译", "owner": "jimeng-sd2-prompting", "conditional": true },
+    { "id": "audit_fast", "label": "快速镜头组预检", "owner": "camera-group-preflight-fast", "conditional": true },
+    { "id": "audit_standard", "label": "标准镜头组预检", "owner": "camera-group-preflight-standard", "conditional": true },
+    { "id": "audit_full", "label": "完整专业预检", "owner": "ai-video-prompt-preflight", "conditional": true }
+  ],
+  "exclusiveGroups": [
+    {
+      "id": "platform_compiler",
+      "label": "平台编译器",
+      "members": ["seedance-camera-group-compiler-fast", "seedance-20", "jimeng-sd2-prompting"],
+      "allowTogetherWhen": "cross-platform comparison explicitly requests separate outputs; never together for one final prompt"
+    }
+  ],
+  "optionalCapabilities": [
+    "blender-mcp-previs",
+    "generation-asset-pipeline",
+    "mocap-action-previs",
+    "reference-track-mv-director",
+    "commercial-video-strategy"
+  ]
+}

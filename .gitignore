@@ -1,0 +1,8 @@
+.state/
+data/*.jsonl
+!data/.gitkeep
+node_modules/
+asset-console/tmp-*
+asset-console/*.png
+tmp-*.mjs
+*.log

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>技能管理</title><script src="/theme.js"></script><link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="workspace-shell">
+  <header class="workspace-header workspace-header-native"><nav class="workspace-switch" role="tablist" aria-label="技能功能切换">
+    <button id="workspace-tab-manage" class="workspace-switch-button is-active" type="button" role="tab" aria-selected="true" aria-controls="workspace-manage" data-workspace-view="manage">技能</button>
+  </nav></header>
+  <section id="workspace-manage" class="workspace-content" role="tabpanel" aria-label="技能管理" aria-labelledby="workspace-tab-manage">
+    <div class="manage-intro"><h1>技能</h1><p>管理导演工作流中可调用的专业能力</p></div>
+    <div class="manage-toolbar"><label class="skill-search"><span aria-hidden="true">⌕</span><input id="skill-search" type="search" placeholder="搜索技能" autocomplete="off"></label></div>
+    <div class="manage-catalog"><div class="installed-bar"><div><strong>已安装</strong><span id="skill-count">正在读取技能目录</span></div><span id="skill-updated"></span></div><div id="skill-filters" class="skill-filters" role="group" aria-label="技能筛选"></div><div id="skill-list" class="skill-list" aria-live="polite"></div></div>
+  </section>
+</main>
+<dialog id="skill-detail-dialog" class="skill-detail-dialog" aria-labelledby="skill-detail-title"><article class="skill-detail-card"><header class="skill-detail-topbar"><span id="skill-detail-icon" class="skill-detail-icon" aria-hidden="true"></span><div class="skill-detail-top-actions"><button id="skill-detail-enable" class="skill-detail-enable" type="button" aria-pressed="true" aria-label="停用技能" title="停用技能"><i></i></button><button id="skill-detail-more" class="skill-detail-more" type="button" aria-expanded="false" aria-controls="skill-detail-menu" aria-label="更多操作" title="更多操作">•••</button><button id="skill-detail-close" class="skill-detail-close" type="button" aria-label="关闭" title="关闭">×</button><div id="skill-detail-menu" class="skill-detail-menu" hidden><button type="button" data-detail-action="copy-name">复制技能名称</button><button type="button" data-detail-action="copy-path">复制技能路径</button></div></div></header><div class="skill-detail-heading"><h2 id="skill-detail-title"></h2><p id="skill-detail-category"></p></div><div class="skill-detail-body"><section class="skill-detail-prose"><h3>用途</h3><p id="skill-detail-description"></p></section><section id="skill-detail-dependencies" hidden><h3>协作技能</h3><div id="skill-detail-dependency-list" class="skill-detail-chip-list"></div></section><section id="skill-detail-references" hidden><h3>参考资料</h3><p id="skill-detail-reference-count" class="skill-detail-muted"></p></section></div><footer class="skill-detail-footer"><button id="skill-detail-favorite" class="skill-detail-favorite" type="button"></button><button id="skill-detail-trial" class="skill-detail-trial" type="button">立即试用</button></footer></article></dialog>
+<script src="/app.js" defer></script>
+</body></html>

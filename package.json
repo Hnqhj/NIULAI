@@ -1,0 +1,24 @@
+{
+  "name": "director-skill-console",
+  "version": "0.4.0",
+  "private": true,
+  "description": "Local, read-only Skill registry, routing audit, and run-status console for Codex.",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "scan": "node src/cli.js scan",
+    "audit": "node src/cli.js audit",
+    "audit-delivery": "node src/cli.js delivery-audit",
+    "validate-state": "node src/cli.js validate-state",
+    "route-plan": "node src/cli.js route-plan",
+    "seed": "node src/cli.js seed-run",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@dagrejs/dagre": "1.1.5",
+    "ajv": "^8.20.0"
+  }
+}

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIGC 资产库</title>
+  <link rel="stylesheet" href="/ui-v3.css?v=20260911-2">
+</head>
+<body>
+  <main class="asset-shell">
+    <header class="asset-header">
+      <div>
+        <p class="eyebrow">AIGC WORKSPACE</p>
+        <h1>资产库</h1>
+        <p class="subtitle">图片、视频、音乐与提示词的生成记录。</p>
+      </div>
+      <div class="header-actions">
+        <span id="scanStatus" class="status-text">正在连接</span>
+        <button id="folderButton" class="button" type="button">来源目录</button>
+        <button id="scanButton" class="button primary" type="button">扫描资产</button>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="资产筛选">
+      <nav class="tabs" aria-label="内容类型">
+        <button class="tab active" data-view="assets" type="button">素材</button>
+        <button class="tab" data-view="prompts" type="button">提示词</button>
+        <button class="tab" data-view="generations" type="button">生成记录</button>
+        <button class="tab" data-view="collections" type="button">合集</button>
+        <button class="tab" data-view="savedFilters" type="button">保存搜索</button>
+      </nav>
+      <div class="filters">
+        <label class="search"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" aria-label="搜索资产" placeholder="搜索文件名、提示词、模型或标签" autocomplete="off"></label>
+        <div id="assetFilters" class="asset-filters">
+          <select id="projectFilter" aria-label="来源项目"><option value="">全部来源</option></select>
+          <select id="kindFilter" aria-label="媒体类型"><option value="">全部类型</option><option value="image">图片</option><option value="video">视频</option><option value="music">音乐</option><option value="prompt">提示词文件</option></select>
+          <select id="groupFilter" aria-label="资产分组"><option value="">全部分组</option><option value="official">正式资产</option><option value="review">待确认</option><option value="noise">干扰项</option></select>
+          <select id="availabilityFilter" aria-label="可用状态"><option value="">全部状态</option><option value="available">可用</option><option value="missing">文件缺失</option><option value="source-offline">来源离线</option><option value="source-disabled">来源已停用</option></select>
+          <select id="favoriteFilter" aria-label="收藏状态"><option value="">全部收藏</option><option value="true">仅收藏</option><option value="false">未收藏</option></select>
+          <select id="tagFilter" aria-label="标签"><option value="">全部标签</option></select>
+          <select id="sortFilter" aria-label="排序"><option value="updated">最近更新</option><option value="name">名称</option></select>
+        </div>
+        <div class="filter-actions">
+          <button id="clearFiltersButton" class="button" type="button">清除筛选</button>
+          <button id="saveSearchButton" class="button" type="button">保存搜索</button>
+          <button id="newCollectionButton" class="button primary" type="button">新建合集</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="workspace-head"><div id="summary" class="summary"></div></div>
+      <div id="assetGrid" class="asset-grid" aria-live="polite"></div>
+      <button id="loadMoreButton" class="button load-more" type="button" hidden>加载更多</button>
+      <div id="emptyState" class="empty-state" hidden>
+        <strong>还没有可展示的内容</strong>
+        <span>添加来源目录后扫描。素材保留在原位置，数据库仅保存索引与元数据。</span>
+        <button id="emptyAction" class="button primary" type="button">添加来源目录</button>
+      </div>
+    </section>
+  </main>
+  <dialog id="detailPanel" class="detail-panel" aria-label="资产详情">
+    <div class="detail-head"><strong id="detailTitle">资产详情</strong><button id="closeDetail" class="icon-button" type="button" aria-label="关闭">×</button></div>
+    <div id="detailBody" class="detail-body"></div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="folderDialog" class="folder-dialog">
+    <form method="dialog" id="folderForm">
+      <div class="dialog-head"><strong>来源目录</strong><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <p class="dialog-hint">原始图片、视频、音乐保留在本地或外置盘目录。资产库只保存索引、提示词、标签与生成记录。</p>
+      <div id="folderList" class="folder-list"></div>
+      <div class="folder-add folder-picker-row"><input id="folderPath" placeholder="选择后显示本机文件夹路径" autocomplete="off" readonly><button id="pickFolder" class="button" type="button">选择文件夹</button><button id="addFolder" class="button primary" type="button">添加</button></div>
+      <div class="folder-add folder-name-row"><input id="folderName" placeholder="名称（可选）" autocomplete="off"><span></span><span></span></div>
+      <div class="dialog-actions"><button class="button" value="cancel">取消</button><button id="saveFolders" class="button primary" value="default">保存并扫描</button></div>
+    </form>
+  </dialog>
+  <dialog id="saveSearchDialog" class="folder-dialog">
+    <form method="dialog">
+      <div class="dialog-head"><strong>保存当前搜索</strong><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <div class="folder-add"><input id="savedSearchName" placeholder="搜索名称" autocomplete="off"><button id="createSavedSearch" class="button primary" type="button">保存</button></div>
+    </form>
+  </dialog>
+  <dialog id="collectionDialog" class="folder-dialog">
+    <form method="dialog">
+      <div class="dialog-head"><strong>新建合集</strong><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <div class="folder-add"><input id="collectionName" placeholder="合集名称" autocomplete="off"><button id="createCollection" class="button primary" type="button">创建</button></div>
+    </form>
+  </dialog>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
